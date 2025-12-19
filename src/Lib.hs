@@ -19,6 +19,17 @@ specialClient :: Client -> Bool
 specialClient (clientName -> "Mr. Alejandro") = True
 specialClient (responsibility -> "Director") = True
 specialClient _ = False
+
+data ClientR = GovOrgR { clientRName :: String }
+    | CompanyR { clientRName :: String
+              , companyId:: Integer
+              , person :: PersonR
+              , duty :: String }
+    | IndivisualR { person :: PersonR }
+    deriving Show
+data PersonR = PersonR { firstName :: String
+                      , lastName :: String
+                      } deriving (Show, Eq, Read)
 someFunc :: IO ()
 someFunc = do
     let mycom = Company "Mr. Alejandro" 30 "officer" "Director"
@@ -29,3 +40,7 @@ someFunc = do
     print $ specialClient me
     print $ clientName me
     print $ responsibility me
+    let p = read  "PersonR {firstName = \"Ben\", lastName = \"Lim\"}" :: PersonR 
+    print $ firstName p
+    let p2 = p { firstName = "John" }
+    print $ firstName p2

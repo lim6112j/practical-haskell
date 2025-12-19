@@ -26,6 +26,8 @@ source-repository head
 library
   exposed-modules:
       Lib
+      NumTutorial
+      TreeTutorial
   other-modules:
       Paths_practical_haskell
   autogen-modules:
