@@ -33,6 +33,13 @@ ghc-options:
 - -Wpartial-fields
 - -Wredundant-constraints
 
+dependencies:
+- base >= 4.7 && < 5
+- foldable-traversable
+- lazyness-timemachine
+- lens
+- hspec
+
 library:
   source-dirs: src
 
