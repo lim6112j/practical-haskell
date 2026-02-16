@@ -1,5 +1,5 @@
 {-|
-Module      : Spec
+Module      : Main
 Description : Test suite for the application.
 Copyright   : (c) 2026, Your Name
 License     : MIT
@@ -9,7 +9,7 @@ Stability   : experimental
 This module contains the test suite for the application.
 -}
 
-module Spec (main) where
+module Main (main) where
 
 import Test.Hspec
 import Lib
