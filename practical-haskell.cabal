@@ -66,6 +66,7 @@ executable practical-haskell-exe
 test-suite practical-haskell-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
+  default: True
   other-modules:
       Paths_practical_haskell
   autogen-modules:
