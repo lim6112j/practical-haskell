@@ -22,7 +22,7 @@ module Lib
     , PersonR(..)
     ) where
 
-import Control.Lens (makeLenses)
+import Control.Lens (makeLenses, (^.), (.~), set)
 
 {-|
 Data type representing a client, which can be either a Government Organization,
@@ -92,6 +92,6 @@ someFunc = do
     print $ clientName me
     print $ responsibility me
     let p = read  "PersonR {firstName = \"Ben\", lastName = \"Lim\"}" :: PersonR 
-    print $ firstName p
-    let p2 = p & firstName .~ "John"
-    print $ firstName p2
+    print $ p ^. firstName
+    let p2 = set firstName "John" p
+    print $ p2 ^. firstName
