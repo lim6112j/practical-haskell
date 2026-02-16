@@ -12,9 +12,6 @@ This module contains the main entry point for the application.
 module Main (main) where
 
 import Lib
-import NumTutorial
-import TreeTutorial
-import Foldables
 import LazynessTimemachine
 
 {-|

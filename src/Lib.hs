@@ -10,6 +10,8 @@ This module provides utility functions and data types used throughout the applic
 -}
 
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE TemplateHaskell #-}
+
 module Lib
     ( someFunc
     , Client(..)
@@ -19,6 +21,8 @@ module Lib
     , ClientR(..)
     , PersonR(..)
     ) where
+
+import Control.Lens (makeLenses)
 
 {-|
 Data type representing a client, which can be either a Government Organization,
@@ -56,20 +60,23 @@ specialClient _ = False
 Data type representing a client with record syntax, which can be either a Government Organization,
 a Company, or an Individual.
 -}
-data ClientR = GovOrgR { clientRName :: String }
-    | CompanyR { clientRName :: String
-              , companyId:: Integer
-              , person :: PersonR
-              , duty :: String }
-    | IndividualR { person :: PersonR }
+data ClientR = GovOrgR { _clientRName :: String }
+    | CompanyR { _clientRName :: String
+              , _companyId:: Integer
+              , _person :: PersonR
+              , _duty :: String }
+    | IndividualR { _person :: PersonR }
     deriving Show
 
 {-|
 Data type representing a person with record syntax.
 -}
-data PersonR = PersonR { firstName :: String
-                      , lastName :: String
+data PersonR = PersonR { _firstName :: String
+                      , _lastName :: String
                       } deriving (Show, Eq, Read)
+
+makeLenses ''ClientR
+makeLenses ''PersonR
 
 {-|
 Example function that demonstrates some functionality of the module.
@@ -86,5 +93,5 @@ someFunc = do
     print $ responsibility me
     let p = read  "PersonR {firstName = \"Ben\", lastName = \"Lim\"}" :: PersonR 
     print $ firstName p
-    let p2 = p { firstName = "John" }
+    let p2 = p & firstName .~ "John"
     print $ firstName p2
