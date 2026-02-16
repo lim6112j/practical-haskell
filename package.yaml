@@ -52,7 +52,6 @@ executables:
 
 tests:
   practical-haskell-test:
-    main:                Spec.hs
     source-dirs:         test
     ghc-options:
     - -threaded
