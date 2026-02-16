@@ -9,7 +9,7 @@ Stability   : experimental
 This module contains the test suite for the application.
 -}
 
-module Spec where
+module Spec (main) where
 
 import Test.Hspec
 import Lib
