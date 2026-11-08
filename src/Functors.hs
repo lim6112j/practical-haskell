@@ -25,3 +25,14 @@ modifyTravelGuidePriceTree m = fmap (\tg -> tg { price = m * price tg })
 
 modifyTravelGuidePrice' :: Functor f => Double -> f TravelGuide -> f TravelGuide
 modifyTravelGuidePrice' m = fmap (\tg -> tg { price = m * price tg})
+
+main :: IO ()
+main = do
+    let guides =
+            [ TravelGuide "Paris" ["John"] 25.0
+            , TravelGuide "Rome" ["Jane"] 30.0
+            ]
+    print $ modifyTravelGuidePrice 1.1 guides
+    print $ modifyTravelGuidePrice' 1.1 guides
+    print $ modifyTravelGuidePriceMap 1.1 (M.fromList [("paris", TravelGuide "Paris" ["John"] 25.0)])
+    print $ modifyTravelGuidePriceTree 1.1 (T.Node (TravelGuide "Paris" ["John"] 25.0) [])

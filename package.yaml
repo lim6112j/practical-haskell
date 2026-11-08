@@ -50,6 +50,92 @@ executables:
     dependencies:
     - practical-haskell
 
+  binary-tree-cache:
+    main:                BinaryTreeCache.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - BinaryTreeCache
+
+  foldables:
+    main:                Foldables.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Foldables
+
+  functors:
+    main:                Functors.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Functors
+
+  lazyness-timemachine:
+    main:                LazynessTimemachine.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - LazynessTimemachine
+
+  lib:
+    main:                Lib.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Lib
+
+  num-tutorial:
+    main:                NumTutorial.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - NumTutorial
+
+  tree-tutorial:
+    main:                TreeTutorial.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - TreeTutorial
+  timemachine:
+    main:                TimeMachine.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - TimeMachine
 tests:
   practical-haskell-test:
     main:                Spec.hs

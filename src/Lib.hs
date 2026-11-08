@@ -14,6 +14,7 @@ This module provides utility functions and data types used throughout the applic
 
 module Lib
     ( someFunc
+    , main
     , Client(..)
     , clientName
     , responsibility
@@ -91,7 +92,10 @@ someFunc = do
     print $ specialClient me
     print $ clientName me
     print $ responsibility me
-    let p = read  "PersonR {firstName = \"Ben\", lastName = \"Lim\"}" :: PersonR 
+    let p = read  "PersonR {_firstName = \"Ben\", _lastName = \"Lim\"}" :: PersonR 
     print $ p ^. firstName
     let p2 = set firstName "John" p
     print $ p2 ^. firstName
+
+main :: IO ()
+main = someFunc

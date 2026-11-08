@@ -11,15 +11,19 @@ This module contains the main entry point for the application.
 
 module Main (main) where
 
-import Lib
-import LazynessTimemachine
+import Foldables hiding (main)
+-- Alternates, kept next to their `main` lines below:
+-- import Lib hiding (main)
+-- import NumTutorial hiding (main)
+-- import TreeTutorial hiding (main)
+-- import LazynessTimemachine hiding (main)
 
 {-|
 The main function is the entry point of the application. It currently calls `timeMachineFunc`.
 -}
 main :: IO ()
---main = someFunc
+-- main = someFunc
 -- main = complexFunc
 -- main = treeFunc
--- main = foldFunc
-main = timeMachineFunc
+main = foldFunc
+-- main = timeMachineFunc

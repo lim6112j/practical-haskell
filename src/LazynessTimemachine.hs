@@ -1,4 +1,4 @@
-module LazynessTimemachine(timeMachineFunc) where
+module LazynessTimemachine(timeMachineFunc, main) where
 
 data TimeMachine = TM { manufacturer :: String, year :: Integer } deriving (Show, Eq)
 
@@ -9,4 +9,7 @@ timeMachineFunc :: IO ()
 timeMachineFunc = do
     let tms = timeMachineFrom "DeLorean" 1950
     print (take 5 tms)
+
+main :: IO ()
+main = timeMachineFunc
 

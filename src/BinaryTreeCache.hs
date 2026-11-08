@@ -37,3 +37,9 @@ instance Monoid Min where
   mempty = Min infinity where infinity = 1/0
   mappend = (<>)
 
+main :: IO ()
+main = do
+    let tree = treeInsert3 "paris" 1 (treeInsert3 "rome" 2 Leaf3)
+    print tree
+    print $ treeInsert4 "paris" (Min 20.0) (treeInsert4 "rome" (Min 30.0) Leaf3)
+

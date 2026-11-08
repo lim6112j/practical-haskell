@@ -1,6 +1,6 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.38.1.
+-- This file has been generated from package.yaml by hpack version 0.39.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -31,6 +31,7 @@ library
       LazynessTimemachine
       Lib
       NumTutorial
+      TimeMachine
       TreeTutorial
   other-modules:
       Paths_practical_haskell
@@ -39,6 +40,78 @@ library
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable binary-tree-cache
+  main-is: BinaryTreeCache.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is BinaryTreeCache
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable foldables
+  main-is: Foldables.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Foldables
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable functors
+  main-is: Functors.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Functors
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable lazyness-timemachine
+  main-is: LazynessTimemachine.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is LazynessTimemachine
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable lib
+  main-is: Lib.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Lib
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable num-tutorial
+  main-is: NumTutorial.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is NumTutorial
   build-depends:
       base >=4.7 && <5
     , containers
@@ -61,6 +134,30 @@ executable practical-haskell-exe
     , hspec
     , lens
     , practical-haskell
+  default-language: Haskell2010
+
+executable timemachine
+  main-is: TimeMachine.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is TimeMachine
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+  default-language: Haskell2010
+
+executable tree-tutorial
+  main-is: TreeTutorial.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is TreeTutorial
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
   default-language: Haskell2010
 
 test-suite practical-haskell-test

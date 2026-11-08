@@ -12,7 +12,7 @@ This module contains the test suite for the application.
 module Main (main) where
 
 import Test.Hspec
-import Lib
+import Lib (Client(..), clientName, responsibility, specialClient)
 
 main :: IO ()
 main = hspec $ do

@@ -1,4 +1,4 @@
-module TreeTutorial(treeFunc) where
+module TreeTutorial(treeFunc, main) where
 
 data TravelGuide = TravelGuide {
     title :: String,
@@ -59,3 +59,6 @@ treeFunc = do
     print $ tg1 <= tg2
     print $ tg2 <= tg3
     print $ tg3 <= tg1
+
+main :: IO ()
+main = treeFunc

@@ -1,4 +1,4 @@
-module NumTutorial(complexFunc) where
+module NumTutorial(complexFunc, main) where
 
 data Complex = C Double Double deriving (Show, Eq)
 
@@ -20,3 +20,6 @@ complexFunc = do
   print $ abs (C 1 2)
   print  ( 1 :: Complex)
   print $ signum (C 1 2)
+
+main :: IO ()
+main = complexFunc
