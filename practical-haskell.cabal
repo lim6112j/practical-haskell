@@ -26,10 +26,12 @@ source-repository head
 library
   exposed-modules:
       BinaryTreeCache
+      Containers
       Foldables
       Functors
       LazynessTimemachine
       Lib
+      ListPredicate
       NumTutorial
       TimeMachine
       TreeTutorial
