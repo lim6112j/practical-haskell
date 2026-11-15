@@ -28,6 +28,7 @@ library
       BinaryTreeCache
       Containers
       Ex01FoldableTraversable
+      Ex01FoldableTraversableAnswer
       Ex02MonadTransformers
       Ex03Gadt
       Ex04Laziness
