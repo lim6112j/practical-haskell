@@ -5,6 +5,8 @@ module HaskellVersion (main, addItem, printReceipt, runProgram) where
 
 import Control.Monad.State
 import Control.Monad.Trans.Reader
+import Control.Monad.Trans.Writer (WriterT, runWriterT)
+import Control.Monad.Writer.Class (tell)
 import Data.List (intercalate)
 import Text.Printf (printf)
 
@@ -39,7 +41,7 @@ data CartState = CartState
 -- const modify = (f: (s: CartState) => CartState): RState<undefined> =>
 --   env => s => [undefined, f(s)];
 --
-type RState a = ReaderT Env (State CartState) a
+type RState a = ReaderT Env (WriterT String (State CartState)) a
 
 addItem :: String -> Float -> RState String
 addItem item price = do
@@ -49,7 +51,9 @@ addItem item price = do
   let newState =
         CartState{items = items oldState ++ [item], totalTax = totalTax oldState + tax}
   put newState
-  pure (item ++ currency env)
+  let itemLine = item ++ currency env
+  tell itemLine
+  pure itemLine
 
 printReceipt :: RState String
 printReceipt = do
@@ -83,8 +87,8 @@ printReceipt = do
 -- const step2 = addItem("milk", 2)(myEnv)(step1[1]);
 -- console.log(printReceipt(myEnv)(step2[1])[0]);
 -- // => "coffee€, milk€ | 세금 합계: 0.60€"
-runProgram :: RState a -> Env -> CartState -> (a, CartState)
-runProgram prog env = runState (runReaderT prog env)
+runProgram :: RState a -> Env -> CartState -> ((a, String), CartState)
+runProgram prog env st = runState (runWriterT (runReaderT prog env)) st
 
 program :: RState String
 program = addItem "coffee" 4 >> addItem "milk" 2 >> printReceipt
@@ -93,7 +97,8 @@ main :: IO ()
 main = do
   let env = Env{taxRate = 0.1, currency = "€"}
       emptyCart = CartState{items = [], totalTax = 0}
-      (receipt, finalState) = runProgram program env emptyCart
+      ((receipt, log), finalState) = runProgram program env emptyCart
+  putStrLn log
   putStrLn receipt
   print finalState
 
