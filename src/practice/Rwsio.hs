@@ -1,8 +1,8 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module HaskellVersion (
-  main,
+module Rwsio
+  ( main,
   addItem,
   printReceipt,
   runProgram,

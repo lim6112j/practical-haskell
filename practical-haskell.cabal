@@ -27,6 +27,17 @@ library
   exposed-modules:
       BinaryTreeCache
       Containers
+      Ex01FoldableTraversable
+      Ex02MonadTransformers
+      Ex03Gadt
+      Ex04Laziness
+      Ex05ST
+      Ex06Comonad
+      Ex07FreeMonad
+      Ex08Lens
+      Ex09RecursionSchemes
+      Ex10TypeFamilies
+      Ex11Generics
       Foldables
       Functors
       LazynessTimemachine
@@ -77,6 +88,160 @@ executable dsl
     , lens
     , mtl
     , time
+    , transformers
+  default-language: Haskell2010
+
+executable ex01-foldable-traversable
+  main-is: Ex01FoldableTraversable.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex01FoldableTraversable
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex02-monad-transformers
+  main-is: Ex02MonadTransformers.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex02MonadTransformers
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex03-gadt
+  main-is: Ex03Gadt.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex03Gadt
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex04-laziness
+  main-is: Ex04Laziness.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex04Laziness
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex05-st
+  main-is: Ex05ST.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex05ST
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex06-comonad
+  main-is: Ex06Comonad.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex06Comonad
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex07-free-monad
+  main-is: Ex07FreeMonad.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex07FreeMonad
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex08-lens
+  main-is: Ex08Lens.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex08Lens
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex09-recursion-schemes
+  main-is: Ex09RecursionSchemes.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex09RecursionSchemes
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex10-type-families
+  main-is: Ex10TypeFamilies.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex10TypeFamilies
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable ex11-generics
+  main-is: Ex11Generics.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex11Generics
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
     , transformers
   default-language: Haskell2010
 

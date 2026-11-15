@@ -142,6 +142,127 @@ executables:
     - -main-is
     - Dsl
 
+  ex01-foldable-traversable:
+    main:                Ex01FoldableTraversable.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex01FoldableTraversable
+
+  ex02-monad-transformers:
+    main:                Ex02MonadTransformers.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex02MonadTransformers
+
+  ex03-gadt:
+    main:                Ex03Gadt.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex03Gadt
+
+  ex04-laziness:
+    main:                Ex04Laziness.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex04Laziness
+
+  ex05-st:
+    main:                Ex05ST.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex05ST
+
+  ex06-comonad:
+    main:                Ex06Comonad.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex06Comonad
+
+  ex07-free-monad:
+    main:                Ex07FreeMonad.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex07FreeMonad
+
+  ex08-lens:
+    main:                Ex08Lens.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex08Lens
+
+  ex09-recursion-schemes:
+    main:                Ex09RecursionSchemes.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex09RecursionSchemes
+
+  ex10-type-families:
+    main:                Ex10TypeFamilies.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex10TypeFamilies
+
+  ex11-generics:
+    main:                Ex11Generics.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex11Generics
+
   timemachine:
     main:                TimeMachine.hs
     source-dirs:         src
