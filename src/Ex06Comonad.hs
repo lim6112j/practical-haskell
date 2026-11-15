@@ -69,15 +69,14 @@ sIterate f x = Stream x (sIterate f (f x))
 -- ---------------------------------------------------------------------------
 
 instance Functor Stream where
-  fmap f (Stream a s) = Stream (f a) (fmap f s)
+  fmap = undefined
 
 instance Comonad Stream where
-  extract (Stream a _) = a
+  extract = undefined
 
-  duplicate s@(Stream _ xs) = Stream s (duplicate xs)
+  duplicate = undefined
 
-  -- extend f s@(Stream _ xs) = Stream (f s) (extend f xs)
-  extend f = fmap f . duplicate
+  extend = undefined
 
 -- ---------------------------------------------------------------------------
 -- 예제 2. Zipper — "현재 위치" 가 있는 리스트

@@ -33,6 +33,7 @@ library
       Ex04Laziness
       Ex05ST
       Ex06Comonad
+      EX06ComonadAnswer
       Ex07FreeMonad
       Ex08Lens
       Ex09RecursionSchemes
