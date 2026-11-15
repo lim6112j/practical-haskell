@@ -24,6 +24,8 @@ dependencies:
 - containers
 - lens
 - hspec
+- mtl
+- transformers
 
 ghc-options:
 - -Wall
@@ -126,6 +128,20 @@ executables:
     - -with-rtsopts=-N
     - -main-is
     - TreeTutorial
+
+  dsl:
+    main:                13/dsl.hs
+    source-dirs:         src
+    other-modules:       []
+    dependencies:
+    - time
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Dsl
+
   timemachine:
     main:                TimeMachine.hs
     source-dirs:         src

@@ -47,6 +47,8 @@ library
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable binary-tree-cache
@@ -59,6 +61,23 @@ executable binary-tree-cache
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
+  default-language: Haskell2010
+
+executable dsl
+  main-is: 13/dsl.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Dsl
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , time
+    , transformers
   default-language: Haskell2010
 
 executable foldables
@@ -71,6 +90,8 @@ executable foldables
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable functors
@@ -83,6 +104,8 @@ executable functors
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable lazyness-timemachine
@@ -95,6 +118,8 @@ executable lazyness-timemachine
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable lib
@@ -107,6 +132,8 @@ executable lib
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable num-tutorial
@@ -119,6 +146,8 @@ executable num-tutorial
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable practical-haskell-exe
@@ -135,7 +164,9 @@ executable practical-haskell-exe
     , containers
     , hspec
     , lens
+    , mtl
     , practical-haskell
+    , transformers
   default-language: Haskell2010
 
 executable timemachine
@@ -148,6 +179,8 @@ executable timemachine
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 executable tree-tutorial
@@ -160,6 +193,8 @@ executable tree-tutorial
     , containers
     , hspec
     , lens
+    , mtl
+    , transformers
   default-language: Haskell2010
 
 test-suite practical-haskell-test
@@ -177,5 +212,7 @@ test-suite practical-haskell-test
     , containers
     , hspec
     , lens
+    , mtl
     , practical-haskell
+    , transformers
   default-language: Haskell2010
