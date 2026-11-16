@@ -36,6 +36,7 @@ library
       Ex04Laziness
       Ex04LazinessAnswer
       Ex05ST
+      Ex05STAnswer
       Ex06Comonad
       EX06ComonadAnswer
       Ex07FreeMonad
