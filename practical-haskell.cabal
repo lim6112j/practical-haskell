@@ -30,6 +30,7 @@ library
       Ex01FoldableTraversable
       Ex01FoldableTraversableAnswer
       Ex02MonadTransformers
+      Ex02MonadTransformersAnswer
       Ex03Gadt
       Ex04Laziness
       Ex05ST
