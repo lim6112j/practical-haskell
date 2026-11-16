@@ -34,6 +34,7 @@ library
       Ex03Gadt
       Ex03GadtAnswer
       Ex04Laziness
+      Ex04LazinessAnswer
       Ex05ST
       Ex06Comonad
       EX06ComonadAnswer
