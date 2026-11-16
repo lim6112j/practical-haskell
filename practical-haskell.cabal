@@ -32,6 +32,7 @@ library
       Ex02MonadTransformers
       Ex02MonadTransformersAnswer
       Ex03Gadt
+      Ex03GadtAnswer
       Ex04Laziness
       Ex05ST
       Ex06Comonad
