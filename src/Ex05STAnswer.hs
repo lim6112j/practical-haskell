@@ -16,7 +16,8 @@ module Ex05STAnswer (
 ) where
 
 import Control.Monad.ST (ST, runST)
-import Data.IORef (IORef, modifyIORef', newIORef, readIORef)
+import Data.IORef (IORef, modifyIORef', newIORef, readIORef, writeIORef)
+import Data.List (find)
 import Data.STRef (STRef, modifySTRef, newSTRef, readSTRef, writeSTRef)
 
 -- ---------------------------------------------------------------------------
@@ -58,7 +59,8 @@ sumViaRef n = runST $ do
         | i > n = readSTRef ref
         | otherwise = do
             x <- readSTRef ref
-            writeSTRef ref $! x + i -- $! 로 강제: modifySTRef 처럼 thunk 를 쌓지 않는다
+            writeSTRef ref $! x + i
+            -- \$! 로 강제: modifySTRef 처럼 thunk 를 쌓지 않는다
             go (i + 1)
   go 1
 
@@ -82,12 +84,44 @@ sumViaRef n = runST $ do
 --     * (심화) Data.Array.ST / STArray 를 찾아보라. STRef 리스트보다
 --       훨씬 자연스럽고 빠르다.
 -- ---------------------------------------------------------------------------
-
+-- 정렬 알고리즘은 직접. 선택 정렬을 권장.
 sortPure :: (Ord a) => [a] -> [a]
-sortPure = undefined -- 정렬 알고리즘은 직접. 선택 정렬을 권장.
+sortPure [] = []
+sortPure (x : xs) =
+  let m = foldl min x xs
+      rest = deleteFirst m (x : xs) -- m 을 한 개만 제거
+   in m : sortPure rest
+
+deleteFirst :: (Eq a) => a -> [a] -> [a]
+deleteFirst _ [] = []
+deleteFirst y (z : zs)
+  | y == z = zs
+  | otherwise = z : deleteFirst y zs
 
 sortViaST :: (Ord a) => [a] -> [a]
-sortViaST xs = runST (undefined)
+sortViaST xs = runST $ do
+  refs <- mapM newSTRef xs -- 값을 STRef 리스트로
+  let n = length refs
+
+      swapAt i j rs =
+        -- i번째와 j번째 참조를 교환
+        [ if k == i
+          then rs !! j
+          else
+            if k == j
+              then rs !! i
+              else r
+        | (k, r) <- zip [0 ..] rs
+        ]
+
+      go i rs
+        | i >= n - 1 = mapM readSTRef rs -- 다 정렬됐으면 값을 모은다
+        | otherwise = do
+            vals <- mapM readSTRef rs
+            let m = minimum (drop i vals) -- 남은 구간의 최소값
+                j = i + length (takeWhile (/= m) (drop i vals))
+            go (i + 1) (swapAt i j rs) -- 최소값을 앞으로 교환
+  go 0 refs
 
 -- ---------------------------------------------------------------------------
 -- TODO 3. IO vs ST — 같은 코드, 다른 세계
@@ -103,17 +137,29 @@ sortViaST xs = runST (undefined)
 --   힌트:
 --     * pureCount :: Int -> Int 는 ST 안에서 센다.
 --     * ioCount   :: Int -> IO Int 는 IORef 로 센다.
---       (Data.IORef: newIORef, modifyIORef', readIORef)
---     * 둘의 차이는 타입만이 아니라 "무엇을 보장하는가" 이다.
---       pureCount 는 어떤 문맥에서 부르든 같은 값을 준다(참조 투명).
---       ioCount 는 호출할 때마다 새 계산이 수행된다.
 -- ---------------------------------------------------------------------------
 
 pureCount :: Int -> Int
-pureCount = undefined
+pureCount n = runST $ do
+  ref <- newSTRef 0
+  let go !i
+        | i > n = readSTRef ref
+        | otherwise = do
+            x <- readSTRef ref
+            writeSTRef ref $! x + 1
+            go (i + 1)
+  go 1
 
 ioCount :: Int -> IO Int
-ioCount = undefined
+ioCount n = do
+  ref <- newIORef 0
+  let go !i
+        | i > n = readIORef ref
+        | otherwise = do
+            x <- readIORef ref
+            writeIORef ref $! x + 1
+            go (i + 1)
+  go 1
 
 -- ---------------------------------------------------------------------------
 -- TODO 4 (사고 실험). 아래 질문에 답해 봐라.
