@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE TupleSections #-}
 {-# LANGUAGE TypeOperators #-}
 
 {- |
@@ -95,13 +94,13 @@ type Iso s t a b = forall p. (Profunctor p) => p a b -> p s t
 -- ---------------------------------------------------------------------------
 
 view :: Lens' s a -> s -> a
-view l = getConst . l Const
+view l = undefined
 
 set :: Setter' s a -> a -> s -> s
-set l a = over l (const a)
+set = undefined
 
 over :: Setter' s a -> (a -> a) -> s -> s
-over l f = runIdentity . l (Identity . f)
+over = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 2. 렌즈 만들기
@@ -118,13 +117,13 @@ over l f = runIdentity . l (Identity . f)
 -- ---------------------------------------------------------------------------
 
 lens :: (s -> a) -> (s -> b -> t) -> Lens s t a b
-lens getter setter f s = fmap (setter s) (f (getter s)) -- f :: a -> b
+lens = undefined
 
 _1 :: Lens (a, c) (b, c) a b
-_1 f (a, c) = (,c) <$> f a
+_1 = undefined
 
 _2 :: Lens (a, c) (a, b) c b
-_2 f (a, c) = (a,) <$> f c
+_2 = undefined
 
 data Address = Address
   { street :: String
@@ -144,7 +143,7 @@ data Person = Person
   vs  set cityLens newCity person
 -}
 cityLens :: Lens' Person String
-cityLens = lens (city . pAddr) (\p c -> p{pAddr = (pAddr p){city = c}})
+cityLens = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 3. Traversal — "여러 개" 를 동시에 고치기
@@ -168,13 +167,13 @@ cityLens = lens (city . pAddr) (\p c -> p{pAddr = (pAddr p){city = c}})
 -- ---------------------------------------------------------------------------
 
 traversed :: (Traversable t) => Traversal (t a) (t b) a b
-traversed = traverse
+traversed = undefined
 
 both :: Traversal (a, a) (b, b) a b
-both f (x, y) = (,) <$> f x <*> f y
+both = undefined
 
 toListOf :: Traversal' s a -> s -> [a]
-toListOf t = getConst . t (Const . pure)
+toListOf t = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 4. Profunctor 와 Iso
@@ -211,10 +210,10 @@ class Profunctor p where
   rmap = dimap id
 
 instance Profunctor (->) where
-  dimap f g h = g . h . f
+  dimap = undefined
 
 iso :: (s -> a) -> (b -> t) -> Iso s t a b
-iso = dimap
+iso sa bt = dimap sa bt
 
 -- ---------------------------------------------------------------------------
 -- TODO 5. 실제 패키지와 비교

@@ -41,6 +41,7 @@ library
       Ex06ComonadAnswer
       Ex07FreeMonad
       Ex08Lens
+      Ex08LensAnswer
       Ex09RecursionSchemes
       Ex10TypeFamilies
       Ex11Generics
