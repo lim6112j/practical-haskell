@@ -38,7 +38,7 @@ library
       Ex05ST
       Ex05STAnswer
       Ex06Comonad
-      EX06ComonadAnswer
+      Ex06ComonadAnswer
       Ex07FreeMonad
       Ex08Lens
       Ex09RecursionSchemes

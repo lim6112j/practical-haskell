@@ -1,4 +1,9 @@
-{-|
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE TypeOperators #-}
+
+{- |
 Module      : Ex08Lens
 Description : 연습 8 — Profunctor 와 Lens (van Laarhoven optics)
 
@@ -28,14 +33,9 @@ Description : 연습 8 — Profunctor 와 Lens (van Laarhoven optics)
     여기서는 프로펑터 클래스를 직접 정의한다(패키지 의존 없이).
     실제로는 Data.Profunctor(profunctors 패키지)와 Control.Lens 를 쓴다.
 -}
-
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TypeOperators #-}
-
-module Ex08Lens
-  ( main
-  ) where
+module Ex08Lens (
+  main,
+) where
 
 import Data.Functor.Const (Const (..))
 import Data.Functor.Identity (Identity (..))
@@ -51,27 +51,29 @@ import Data.Functor.Identity (Identity (..))
 --   광학은 결국 "고차 함수의 합성" 이다.
 -- ---------------------------------------------------------------------------
 
-type Lens s t a b = forall f. Functor f => (a -> f b) -> s -> f t
+type Lens s t a b = forall f. (Functor f) => (a -> f b) -> s -> f t
 
 type Lens' s a = Lens s s a a
 
-type Traversal s t a b = forall f. Applicative f => (a -> f b) -> s -> f t
+type Traversal s t a b = forall f. (Applicative f) => (a -> f b) -> s -> f t
 
 type Traversal' s a = Traversal s s a a
 
--- | Setter 는 Traversal/Lens 를 Identity 로 *특수화* 한 것이다.
---   그래서 Lens 나 Traversal 은 모두 Setter 자리에 쓸 수 있다(더 일반적이므로).
+{- | Setter 는 Traversal/Lens 를 Identity 로 *특수화* 한 것이다.
+  그래서 Lens 나 Traversal 은 모두 Setter 자리에 쓸 수 있다(더 일반적이므로).
+-}
 type Setter s t a b = (a -> Identity b) -> s -> Identity t
 
 type Setter' s a = Setter s s a a
 
-type Iso s t a b = forall p. Profunctor p => p a b -> p s t
+type Iso s t a b = forall p. (Profunctor p) => p a b -> p s t
 
--- | Iso 의 쓰임: p = (->) 로 인스턴스화하면 "변환기" 가 된다.
---   렌즈와의 차이에 주목: 렌즈는 Functor f 로 매개화하고, Iso 는 Profunctor p 로
---   매개화한다. 실제 lens 라이브러리는 둘을 한 계층으로 합쳐 "Iso 를 렌즈
---   자리에 쓸 수 있게" 만들지만, 그건 훨씬 정교한 타입 트릭이다
---   (forall p f. (Profunctor p, Functor f) => p a (f b) -> s -> f t).
+{- | Iso 의 쓰임: p = (->) 로 인스턴스화하면 "변환기" 가 된다.
+  렌즈와의 차이에 주목: 렌즈는 Functor f 로 매개화하고, Iso 는 Profunctor p 로
+  매개화한다. 실제 lens 라이브러리는 둘을 한 계층으로 합쳐 "Iso 를 렌즈
+  자리에 쓸 수 있게" 만들지만, 그건 훨씬 정교한 타입 트릭이다
+  (forall p f. (Profunctor p, Functor f) => p a (f b) -> s -> f t).
+-}
 
 -- ---------------------------------------------------------------------------
 -- TODO 1. Lens 의 세 가지 연산
@@ -93,13 +95,13 @@ type Iso s t a b = forall p. Profunctor p => p a b -> p s t
 -- ---------------------------------------------------------------------------
 
 view :: Lens' s a -> s -> a
-view l = undefined
+view l = getConst . l Const
 
 set :: Setter' s a -> a -> s -> s
-set = undefined
+set l a = over l (const a)
 
 over :: Setter' s a -> (a -> a) -> s -> s
-over = undefined
+over l f = runIdentity . l (Identity . f)
 
 -- ---------------------------------------------------------------------------
 -- TODO 2. 렌즈 만들기
@@ -116,13 +118,13 @@ over = undefined
 -- ---------------------------------------------------------------------------
 
 lens :: (s -> a) -> (s -> b -> t) -> Lens s t a b
-lens = undefined
+lens getter setter f s = fmap (setter s) (f (getter s)) -- f :: a -> b
 
 _1 :: Lens (a, c) (b, c) a b
-_1 = undefined
+_1 f (a, c) = (,c) <$> f a
 
 _2 :: Lens (a, c) (a, b) c b
-_2 = undefined
+_2 f (a, c) = (a,) <$> f c
 
 data Address = Address
   { street :: String
@@ -137,11 +139,12 @@ data Person = Person
   }
   deriving (Eq, Show)
 
--- | 주소의 도시를 보는 렌즈. 레코드 업데이트 문법과 비교해 봐라:
---   person { pAddr = (pAddr person) { city = newCity } }
---   vs  set cityLens newCity person
+{- | 주소의 도시를 보는 렌즈. 레코드 업데이트 문법과 비교해 봐라:
+  person { pAddr = (pAddr person) { city = newCity } }
+  vs  set cityLens newCity person
+-}
 cityLens :: Lens' Person String
-cityLens = undefined
+cityLens = lens (city . pAddr) (\p c -> p{pAddr = (pAddr p){city = c}})
 
 -- ---------------------------------------------------------------------------
 -- TODO 3. Traversal — "여러 개" 를 동시에 고치기
@@ -164,14 +167,14 @@ cityLens = undefined
 --     d) (선택) setOf / mapMOf
 -- ---------------------------------------------------------------------------
 
-traversed :: Traversable t => Traversal (t a) (t b) a b
-traversed = undefined
+traversed :: (Traversable t) => Traversal (t a) (t b) a b
+traversed = traverse
 
 both :: Traversal (a, a) (b, b) a b
-both = undefined
+both f (x, y) = (,) <$> f x <*> f y
 
 toListOf :: Traversal' s a -> s -> [a]
-toListOf t = undefined
+toListOf t = getConst . t (Const . pure)
 
 -- ---------------------------------------------------------------------------
 -- TODO 4. Profunctor 와 Iso
@@ -208,10 +211,10 @@ class Profunctor p where
   rmap = dimap id
 
 instance Profunctor (->) where
-  dimap = undefined
+  dimap f g h = g . h . f
 
 iso :: (s -> a) -> (b -> t) -> Iso s t a b
-iso sa bt = dimap sa bt
+iso = dimap
 
 -- ---------------------------------------------------------------------------
 -- TODO 5. 실제 패키지와 비교
@@ -234,26 +237,25 @@ main = do
         Person
           { pName = "김하스켈"
           , pAge = 30
-          , pAddr = Address {street = "테헤란로 123", city = "서울"}
+          , pAddr = Address{street = "테헤란로 123", city = "서울"}
           }
 
   -- TODO 1~2
-  print (view cityLens person)                -- "서울"
-  print (set cityLens "부산" person)          -- city 가 "부산" 으로
+  print (view cityLens person) -- "서울"
+  print (set cityLens "부산" person) -- city 가 "부산" 으로
   print (over cityLens (++ " 특별시") person) -- "서울 특별시"
-  print (over _1 (+ 1) (10, 20))              -- (11,20)
-  print (view _2 (10, 20))                    -- 20
+  print (over _1 (+ 1) (10, 20)) -- (11,20)
+  print (view _2 (10, 20)) -- 20
 
   -- TODO 3
-  print (toListOf traversed [1, 2, 3])        -- [1,2,3]
-  print (over traversed (* 2) [1, 2, 3])      -- [2,4,6]
-  print (over both negate (1, 2))             -- (-1,-2)
-  print (toListOf both (1, 2))                -- [1,2]
+  print (toListOf traversed [1, 2, 3]) -- [1,2,3]
+  print (over traversed (* 2) [1, 2, 3]) -- [2,4,6]
+  print (over both negate (1, 2)) -- (-1,-2)
+  print (toListOf both (1, 2)) -- [1,2]
 
   -- TODO 4: Iso — p = (->) 로 인스턴스화해서 쓴다
   let strInt = iso read show :: Iso String String Int Int
       swapIso = iso (\(a, b) -> (b, a)) (\(b, a) -> (a, b))
-  print (strInt negate "42")                -- "-42"  (읽고, 부정하고, 출력)
+  print (strInt negate "42") -- "-42"  (읽고, 부정하고, 출력)
   print (swapIso (\(a, b) -> (negate a, negate b)) (1, 2 :: Int)) -- (-1,-2)
-
   putStrLn "TODO 1~4 를 채우면 위 출력이 주석과 같아야 한다."
