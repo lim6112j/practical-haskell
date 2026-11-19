@@ -1,4 +1,6 @@
-{-|
+{-# LANGUAGE FlexibleContexts #-}
+
+{- |
 Module      : Ex07FreeMonad
 Description : 연습 7 — Free Monad: 효과를 데이터로 만들기
 
@@ -26,14 +28,11 @@ Description : 연습 7 — Free Monad: 효과를 데이터로 만들기
     단점도 알아 둬라: 모든 >>= 가 트리 노드를 만드므로, 고성능 코드에는
     일반적으로 알맞지 않다(효과 시스템은 "유연성" 을 사는 것이다).
 -}
+module Ex07FreeMonad (
+  main,
+) where
 
-{-# LANGUAGE FlexibleContexts #-}
-
-module Ex07FreeMonad
-  ( main
-  ) where
-
-import Control.Monad.State (State, runState, gets, modify')
+import Control.Monad.State (State, gets, modify', runState)
 
 -- ---------------------------------------------------------------------------
 -- TODO 1. Free 모나드의 정의와 인스턴스
@@ -59,15 +58,15 @@ data Free f a
   = Pure a
   | Free (f (Free f a))
 
-instance Functor f => Functor (Free f) where
+instance (Functor f) => Functor (Free f) where
   fmap = undefined
 
-instance Functor f => Applicative (Free f) where
+instance (Functor f) => Applicative (Free f) where
   pure = undefined
 
   (<*>) = undefined
 
-instance Functor f => Monad (Free f) where
+instance (Functor f) => Monad (Free f) where
   (>>=) = undefined
 
 -- ---------------------------------------------------------------------------
@@ -77,7 +76,7 @@ instance Functor f => Monad (Free f) where
 --         (f 안쪽의 값들을 전부 Pure 로 감싸서 "더 할 일 없음" 을 표시)
 -- ---------------------------------------------------------------------------
 
-liftF :: Functor f => f a -> Free f a
+liftF :: (Functor f) => f a -> Free f a
 liftF = undefined
 
 -- ---------------------------------------------------------------------------
@@ -93,11 +92,11 @@ liftF = undefined
 --     * 이것이 Free 모나드의 전부다. 인터프리터 = foldFree + 대수.
 -- ---------------------------------------------------------------------------
 
-foldFree
-  :: (Functor f, Monad m)
-  => (f (m a) -> m a)
-  -> Free f a
-  -> m a
+foldFree ::
+  (Functor f, Monad m) =>
+  (f (m a) -> m a) ->
+  Free f a ->
+  m a
 foldFree = undefined
 
 -- ---------------------------------------------------------------------------
@@ -125,13 +124,13 @@ data TeletypeF a
   = GetF (String -> a)
   | PutF String a
 
--- | Functor 인스턴스는 자동 유도가 안 된다.
---   왜? `GetF (String -> a)` 에서 a 가 함수의 *인자* 위치(반공변)에 있기 때문.
---   반공변 위치는 fmap 으로 다룰 수 없다. 그래서 손으로 쓴다.
---   (이게 DeriveFunctor 의 한계이고, Invariant 을 따로 배우는 이유이기도 하다.)
+{- | Functor 인스턴스는 자동 유도가 안 된다.
+  왜? `GetF (String -> a)` 에서 a 가 함수의 *인자* 위치(반공변)에 있기 때문.
+  반공변 위치는 fmap 으로 다룰 수 없다. 그래서 손으로 쓴다.
+  (이게 DeriveFunctor 의 한계이고, Invariant 을 따로 배우는 이유이기도 하다.)
+-}
 instance Functor TeletypeF where
   fmap f (GetF k) = GetF (f . k)
-
   fmap f (PutF s a) = PutF s (f a)
 
 -- | 문법을 만들기 위한 스마트 생성자. 이제 do-notation 으로 프로그램을 쓸 수 있다.
@@ -206,5 +205,4 @@ main = do
 
   putStrLn "-- interpPure 로 실행 --"
   print (runPure ["김하스켈"] greet) -- (["안녕하세요, 김하스켈!"], ())
-
   putStrLn "TODO 1~5 를 채우면 위 두 실행이 의도대로 동작해야 한다."

@@ -40,6 +40,7 @@ library
       Ex06Comonad
       Ex06ComonadAnswer
       Ex07FreeMonad
+      Ex07FreeMonadAnswer
       Ex08Lens
       Ex08LensAnswer
       Ex09RecursionSchemes
