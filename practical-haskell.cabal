@@ -43,6 +43,7 @@ library
       Ex08Lens
       Ex08LensAnswer
       Ex09RecursionSchemes
+      Ex09RecursionSchemesAnswer
       Ex10TypeFamilies
       Ex11Generics
       Foldables
