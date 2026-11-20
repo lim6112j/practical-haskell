@@ -144,10 +144,10 @@ class GFields f where
   gfields :: f a -> [Value]
 
 instance GFields U1 where
-  gfields = undefined
+  gfields _ = []
 
 instance (ToValue c) => GFields (K1 i c) where
-  gfields = undefined
+  gfields (K1 x) = [toValue x]
 
 instance (GFields f) => GFields (M1 D d f) where
   gfields (M1 x) = gfields x
@@ -156,13 +156,14 @@ instance (GFields f) => GFields (M1 S s f) where
   gfields (M1 x) = gfields x
 
 instance (Constructor c, GFields f) => GFields (M1 C c f) where
-  gfields = undefined
+  gfields (M1 x) = gfields x
 
 instance (GFields l, GFields r) => GFields (l :*: r) where
-  gfields = undefined
+  gfields (l :*: r) = gfields l ++ gfields r
 
 instance (GFields l, GFields r) => GFields (l :+: r) where
-  gfields = undefined
+  gfields (L1 x) = gfields x
+  gfields (R1 x) = gfields x
 
 -- ---------------------------------------------------------------------------
 -- TODO 3. Generic 과 값 세계를 연결하기
