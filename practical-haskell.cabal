@@ -47,6 +47,7 @@ library
       Ex09RecursionSchemesAnswer
       Ex10TypeFamilies
       Ex11Generics
+      Ex11GenericsAnswer
       Foldables
       Functors
       LazynessTimemachine
