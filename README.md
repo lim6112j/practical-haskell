@@ -20,6 +20,7 @@ Functor / Applicative / Monad / Arrow 이후의 어려운 주제를 연습하기
 | `stack run -- ex09-recursion-schemes` | `src/Ex09RecursionSchemes.hs` | Fix, cata/ana/hylo/para, 재귀의 분해와 재조합 |
 | `stack run -- ex10-type-families` | `src/Ex10TypeFamilies.hs` | DataKinds, 닫힌 타입 가족, TypeLits, 길이를 아는 Vec |
 | `stack run -- ex11-generics` | `src/Ex11Generics.hs` | GHC.Generics 범용 인코더, DefaultSignatures, DerivingVia |
+| `stack run -- ex12-url-shortener` | `src/Ex12UrlShortener.hs` | 실전: URL 단축 + 클릭 통계 서비스 (servant/warp/sqlite/aeson) |
 
 ```bash
 stack build                 # 전체 빌드 (스캐폀드 상태 그대로도 컴파일된다)
@@ -40,6 +41,20 @@ stack ghci                   # 대화형 실험
 9. Ex09 — Recursion Schemes (모든 재귀의 분해)
 10. Ex10 — Type Families / DataKinds (타입 수준 프로그래밍)
 11. Ex11 — Generics + DerivingVia (보일러플레이트 제거)
+12. Ex12 — 실전 프로그램: 지금까지의 개념을 실제 프로그램에 쓴다 (입력 검증, sqlite, aeson, servant/warp)
+
+Ex12 는 서버를 띄워 쓰는 프로그램이다. TODO 1~6(순수 코어)만 먼저 채우고 `stack test` 로
+확인한 뒤, TODO 10~17 을 채워 서버를 올려보자.
+
+```bash
+stack run -- ex12-url-shortener            # 기본 8080 포트 / ex12.db
+stack run -- ex12-url-shortener -- --port 9000 --db my.db
+# 다른 터미널에서
+curl -s -X POST localhost:8080/api/links \
+  -H 'content-type: application/json' -d '{"url":"haskell.org"}'
+curl -si localhost:8080/r/<code>
+curl -s localhost:8080/api/links/<code>
+```
 
 각 파일 상단의 TODO 번호 순서대로 채우면 된다.
 

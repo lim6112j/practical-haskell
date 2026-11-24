@@ -10,7 +10,7 @@ Description : 연습 2 — Monad Transformers (StateT / ExceptT / ReaderT) 와 m
   실행:
       stack run ex02-monad-transformers
 -}
-module Ex02MonadTransformers (
+module Ex02MonadTransformersAnswer (
   main,
 ) where
 

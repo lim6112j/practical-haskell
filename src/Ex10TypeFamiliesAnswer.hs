@@ -46,6 +46,7 @@ module Ex10TypeFamiliesAnswer (
 ) where
 
 import Data.Proxy (Proxy (..))
+import Unsafe.Coerce (unsafeCoerce)
 
 -- \| 타입 레벨 산술 연산자(+ - * <=?)는 모듈 전체를 import 해서 가져온다.
 --   값 레벨 연산자와는 다른 이름 공간(namespace)이므로 충돌하지 않는다.
@@ -136,8 +137,18 @@ type family Length (xs :: [k]) :: Nat where
   Length '[] = 0
   Length (x ': xs) = 1 + Length xs
 
+-- | 값 레벨에서 길이를 센다. 타입은 결과에 관여하지 않는다.
+--
+--   왜 hLengthT 를 그대로 쓸 수 없는가:
+--     hLengthT 는 KnownNat (Length xs) 제약을 요구한다. 즉 "이 타입 레벨 리스트의
+--     길이를 컴파일 타임에 안다" 는 보증이 필요한데, xs 가 아직 변수이면
+--     GHC 는 Length xs 를 Nat 리터럴로 정규화할 수 없어 그 인스턴스를 만들지 못한다.
+--     (반대로 main 에서 구체적인 타입을 붙여 부르면 hLengthT 도 잘 돈다.)
+--     그래서 값 재귀로 센다. 구조를 따라가므로 모든 xs 에 대해 성립하고,
+--     결과는 항상 타입 레벨 Length 와 같다. 타입이 강제하는 쪽은 hLengthT 다.
 hLengthV :: HList xs -> Int
-hLengthV xs = hLengthT xs
+hLengthV HNil = 0
+hLengthV (_ :> xs) = 1 + hLengthV xs
 
 hLengthT :: forall xs. (KnownNat (Length xs)) => HList xs -> Int
 hLengthT _ = fromInteger (natVal (Proxy @(Length xs)))
@@ -180,7 +191,9 @@ type family Max (a :: Nat) (b :: Nat) :: Nat where
 -- ---------------------------------------------------------------------------
 
 reifyNat :: Integer -> Maybe Integer
-reifyNat = undefined
+reifyNat n = case someNatVal n of
+  Just (SomeNat (_ :: Proxy m)) -> Just (fromInteger (natVal (Proxy @m)))
+  Nothing -> Nothing
 
 -- ---------------------------------------------------------------------------
 -- Part D. 길이가 타입에 적힌 벡터 (Vec)
@@ -221,20 +234,56 @@ instance (Show a) => Show (Vec n a) where
 --       양쪽이 동시에 끝난다는 걸 타입이 보장한다.
 -- ---------------------------------------------------------------------------
 
+-- | 두 벡터를 이어붙인다. 결과 길이는 타입에서 (n + m) 으로 계산된다.
+--
+--   왜 단순한 재귀로 끝나지 않는가:
+--     VCons x xs 에서 xs :: Vec n' a 이고 n ~ (n' + 1) 이다.
+--     재귀 결과는 Vec ((n' + m) + 1) a 이지만, 우리가 약속한 타입은
+--     Vec ((n' + 1) + m) a 다. 둘은 같은 수이지만
+--     타입 가족 + 는 비단사(non-injective)라 n' 과 m 이 아직 변수일 때
+--     GHC 가 이 결합법칙을 정규화하지 못한다. 그래서 다음이 풀리지 않는다.
+--
+--         (n' + m) + 1  ~  (n' + 1) + m
+--
+--     coerce 로도 해결되지 않는다. GADT 로 선언된 Vec 의 길이 인자 n 은
+--     role 이 Nominal 로 추론되므로(값이 아닌 타입 인자라도) coerce 는
+--     두 타입이 *문자 그대로 같음* 을 요구한다.
+--
+--   그래서 쓰는 것이 unsafeCoerce 다. 이곳에서 unsafe 인 이유는 타입뿐이다:
+--     * 런타임 항(term)은 VCons x (appendV xs ys) 그대로이며 재해석되지 않는다.
+--     * 양쪽 타입은 같은 값의 서로 다른 "길이 표기" 일 뿐이다.
+--     * unsafeCoerce 는 이 타입 동치가 참이라는 사실에 대한 신뢰를 대신한다.
+--   타입 안전한 대안은 길이를 Nat 이 아니라 타입 레벨 리스트('[] / ':)로
+--   매겨서 타입 가족 ++ 가 첫 인자의 머리에서 바로 정규화되게 하는 것이다.
+--   (그 경우 appendV 는 coerce 없이 그대로 타이핑된다.)
 appendV :: Vec n a -> Vec m a -> Vec (n + m) a
-appendV = undefined
+appendV VNil ys = ys
+appendV (VCons x xs) ys = unsafeCoerce (VCons x (appendV xs ys))
 
 headV :: Vec (n + 1) a -> a
-headV = undefined
+headV (VCons x _) = x
 
+-- | 길이를 값 레벨에서 센다. 결과는 Int 이므로 타입에 아무 정보도 주지 않는다.
+--   타입 레벨 길이는 vlengthT 가 이미 알고 있다(KnownNat n).
 vlengthV :: Vec n a -> Int
-vlengthV = undefined
+vlengthV VNil = 0
+vlengthV (VCons _ xs) = 1 + vlengthV xs
 
 vlengthT :: forall n a. (KnownNat n) => Vec n a -> Int
 vlengthT _ = fromInteger (natVal (Proxy @n))
 
+-- | 길이가 같은 두 벡터를 짝짓는다. 길이 불일치는 타입에서 거부된다.
+--
+--   왜 unsafeCoerce 가 필요한가:
+--     VCons x xs 에서 xs :: Vec n' a, VCons y ys 에서 ys :: Vec n'' b 이고
+--     양쪽 모두 n ~ (n' + 1), n ~ (n'' + 1) 이다. 즉 n' 과 n'' 은 같은 수지만,
+--     타입 가족 + 가 비단사라 GHC 는 n' ~ n'' 을 스스로 끌어내지 못한다.
+--     재귀 호출 zipV xs ys 는 두 인자의 길이 인자가 같아야 하므로
+--     한쪽(여기서는 ys)을 Vec n' b 로 재표기한다.
+--     런타임 항은 그대로이며, 양변은 같은 값의 다른 길이 표기일 뿐이다.
 zipV :: Vec n a -> Vec n b -> Vec n (a, b)
-zipV = undefined
+zipV VNil VNil = VNil
+zipV (VCons x xs) (VCons y ys) = VCons (x, y) (zipV xs (unsafeCoerce ys))
 
 -- ---------------------------------------------------------------------------
 -- TODO 5. (사고 실험 / 다음 단계)

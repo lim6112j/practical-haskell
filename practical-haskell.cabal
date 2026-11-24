@@ -1,6 +1,6 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.39.1.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -38,7 +38,7 @@ library
       Ex05ST
       Ex05STAnswer
       Ex06Comonad
-      Ex06ComonadAnswer
+      EX06ComonadAnswer
       Ex07FreeMonad
       Ex07FreeMonadAnswer
       Ex08Lens
@@ -46,8 +46,11 @@ library
       Ex09RecursionSchemes
       Ex09RecursionSchemesAnswer
       Ex10TypeFamilies
+      Ex10TypeFamiliesAnswer
       Ex11Generics
       Ex11GenericsAnswer
+      Ex12UrlShortener
+      Ex12UrlShortenerAnswer
       Foldables
       Functors
       LazynessTimemachine
@@ -64,12 +67,19 @@ library
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable binary-tree-cache
@@ -78,12 +88,19 @@ executable binary-tree-cache
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is BinaryTreeCache
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable dsl
@@ -92,13 +109,19 @@ executable dsl
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Dsl
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
     , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex01-foldable-traversable
@@ -107,12 +130,19 @@ executable ex01-foldable-traversable
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex01FoldableTraversable
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex02-monad-transformers
@@ -121,12 +151,19 @@ executable ex02-monad-transformers
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex02MonadTransformers
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex03-gadt
@@ -135,12 +172,19 @@ executable ex03-gadt
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex03Gadt
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex04-laziness
@@ -149,12 +193,19 @@ executable ex04-laziness
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex04Laziness
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex05-st
@@ -163,12 +214,19 @@ executable ex05-st
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex05ST
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex06-comonad
@@ -177,12 +235,19 @@ executable ex06-comonad
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex06Comonad
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex07-free-monad
@@ -191,12 +256,19 @@ executable ex07-free-monad
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex07FreeMonad
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex08-lens
@@ -205,12 +277,19 @@ executable ex08-lens
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex08Lens
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex09-recursion-schemes
@@ -219,12 +298,19 @@ executable ex09-recursion-schemes
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex09RecursionSchemes
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex10-type-families
@@ -233,12 +319,19 @@ executable ex10-type-families
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex10TypeFamilies
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable ex11-generics
@@ -247,12 +340,40 @@ executable ex11-generics
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex11Generics
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
+  default-language: Haskell2010
+
+executable ex12-url-shortener
+  main-is: Ex12UrlShortener.hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Ex12UrlShortener
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , containers
+    , hspec
+    , lens
+    , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
+    , transformers
+    , warp
   default-language: Haskell2010
 
 executable foldables
@@ -261,12 +382,19 @@ executable foldables
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Foldables
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable functors
@@ -275,12 +403,19 @@ executable functors
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Functors
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable lazyness-timemachine
@@ -289,12 +424,19 @@ executable lazyness-timemachine
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is LazynessTimemachine
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable lib
@@ -303,12 +445,19 @@ executable lib
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is Lib
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable num-tutorial
@@ -317,12 +466,19 @@ executable num-tutorial
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is NumTutorial
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable practical-haskell-exe
@@ -335,13 +491,20 @@ executable practical-haskell-exe
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
     , practical-haskell
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable timemachine
@@ -350,12 +513,19 @@ executable timemachine
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is TimeMachine
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 executable tree-tutorial
@@ -364,12 +534,19 @@ executable tree-tutorial
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -main-is TreeTutorial
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010
 
 test-suite practical-haskell-test
@@ -383,11 +560,18 @@ test-suite practical-haskell-test
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
     , hspec
     , lens
     , mtl
     , practical-haskell
+    , servant
+    , servant-server
+    , sqlite-simple
+    , text
+    , time
     , transformers
+    , warp
   default-language: Haskell2010

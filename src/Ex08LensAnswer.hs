@@ -34,7 +34,7 @@ Description : 연습 8 — Profunctor 와 Lens (van Laarhoven optics)
     여기서는 프로펑터 클래스를 직접 정의한다(패키지 의존 없이).
     실제로는 Data.Profunctor(profunctors 패키지)와 Control.Lens 를 쓴다.
 -}
-module Ex08Lens (
+module Ex08LensAnswer (
   main,
 ) where
 

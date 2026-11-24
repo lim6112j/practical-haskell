@@ -27,7 +27,7 @@ Description : 연습 9 — 재귀 스킴(recursion schemes): cata / ana / hylo /
     실제로는 `recursion-schemes` 패키지가 이 모든 것을 제공한다.
     여기서는 직접 만든다. 만들고 나면 "fold 는 왜 보편적인가" 가 보인다.
 -}
-module Ex09RecursionSchemes (
+module Ex09RecursionSchemesAnswer (
   main,
 ) where
 

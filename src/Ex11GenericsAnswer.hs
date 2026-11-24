@@ -35,7 +35,7 @@ Description : 연습 11 — GHC.Generics 와 DerivingVia: 보일러플레이트�
     '주어진 코드' 다. 직접 고쳐 보며 실험해 봐라.
     진짜 연습은 TODO 로 표시된 인스턴스 몸통들이다.
 -}
-module Ex11Generics (
+module Ex11GenericsAnswer (
   main,
 ) where
 

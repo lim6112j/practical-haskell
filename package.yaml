@@ -20,12 +20,19 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/practical-haskell#readme>
 
 dependencies:
+- aeson
 - base >= 4.7 && < 5
 - containers
 - lens
 - hspec
 - mtl
+- servant
+- servant-server
+- sqlite-simple
+- text
+- time
 - transformers
+- warp
 
 ghc-options:
 - -Wall
@@ -262,6 +269,17 @@ executables:
     - -with-rtsopts=-N
     - -main-is
     - Ex11Generics
+
+  ex12-url-shortener:
+    main:                Ex12UrlShortener.hs
+    source-dirs:         src
+    other-modules:       []
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is
+    - Ex12UrlShortener
 
   timemachine:
     main:                TimeMachine.hs

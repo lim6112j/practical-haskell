@@ -24,7 +24,7 @@ Description : 연습 6 — Comonad: Monad 의 쌍대(dual)
     직관: Comonad 는 "주변을 볼 수 있는 값" 이다. 현재 위치 + 이웃들.
     셀룰러 오토마타, 이미지 처리, 스트림 윈도우, Zipper, Store(상점) 등이 전형적 예.
 -}
-module Ex06Comonad (
+module EX06ComonadAnswer (
   main,
 ) where
 
