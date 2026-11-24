@@ -1,13 +1,11 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
 {-|
 Module      : Ex12UrlShortenerAnswer
-Description : 연습 12 — 실전: URL 단축 + 클릭 통계 서비스 (정답)
+Description : 연습 12 — 실전: URL 단축 + 클릭 통계 서비스 (연습용)
 
   이 파일은 '구현이 비어 있는' 연습 파일이다.
   아래 TODO가 표시된 함수/인스턴스의 `undefined`를 직접 채워 넣으면 된다.
@@ -34,7 +32,7 @@ Description : 연습 12 — 실전: URL 단축 + 클릭 통계 서비스 (정답
     TODO 14~17 서버 (servant + warp)
     TODO 18    (선택) 효과를 데이터로 — Free 모나드 코어
 
-  순수 코어는 test/Spec.hs 의 hspec으로도 검증한다:
+  순수 코어는 test/Spec.hs 의 hspec으로도 검증한다 (TODO 1~6 을 채운 뒤):
       stack test
 -}
 
@@ -53,33 +51,19 @@ module Ex12UrlShortenerAnswer
   , httpError
   ) where
 
-import Control.Monad.IO.Class (liftIO)
-import Control.Monad.Except (throwError)
-import Data.Aeson (FromJSON (..), ToJSON (..), encode, genericParseJSON, genericToJSON, object, (.=))
-import Data.Aeson.Types (Options (..), defaultOptions)
-import Data.Char (toLower)
-import qualified Data.Map.Strict as Map
-import Data.Maybe (fromMaybe, listToMaybe)
-import Data.Proxy (Proxy (..))
+import Data.Aeson (FromJSON (..), ToJSON (..), encode, object, (.=))
+import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
-import Data.Text.Encoding (encodeUtf8)
-import Data.Time.Clock (UTCTime, addUTCTime, getCurrentTime, utctDay)
-import Data.Time.Clock.POSIX (posixSecondsToUTCTime, utcTimeToPOSIXSeconds)
-import Data.Time.Format (defaultTimeLocale, formatTime)
+import Data.Time.Clock (UTCTime)
 import Data.Word (Word64)
-import Database.SQLite.Simple
-  ( Connection, FromRow (..), Only (..), ToRow (..), execute, execute_
-  , field, fromOnly, open, query, query_ )
+import Database.SQLite.Simple (Connection, FromRow (..), ToRow (..))
 import GHC.Generics (Generic)
 import Network.Wai.Handler.Warp (run)
 import Servant.API
-  ( Capture, Get, JSON, NoContent (..), PlainText, Post, ReqBody
-  , (:>), (:<|>) )
-import Servant.API.Alternative ((:<|>) (..))
-import Servant.Server
-  ( Application, Handler, ServerError (..), ServerT, err302, serve )
+  ( Capture, Get, JSON, NoContent, PlainText, Post, ReqBody, (:>), (:<|>) )
+import Servant.Server (Application, Handler, ServerError (..), ServerT)
 import System.Environment (getArgs)
 
 -- ---------------------------------------------------------------------------
@@ -101,21 +85,10 @@ base62Alphabet :: Text
 base62Alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 base62Encode :: Word64 -> Text
-base62Encode n
-  | n < 62 = T.singleton (T.index base62Alphabet (fromIntegral n))
-  | otherwise =
-      base62Encode (n `div` 62)
-        <> T.singleton (T.index base62Alphabet (fromIntegral (n `mod` 62)))
+base62Encode = undefined
 
 base62Decode :: Text -> Maybe Word64
-base62Decode = go 0
-  where
-    go acc s = case T.uncons s of
-      Nothing -> Just acc
-      Just (c, rest) ->
-        case T.findIndex (== c) base62Alphabet of
-          Nothing -> Nothing
-          Just i -> go (acc * 62 + fromIntegral i) rest
+base62Decode = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 2. URL 정규화와 검증
@@ -134,29 +107,13 @@ base62Decode = go 0
 -- ---------------------------------------------------------------------------
 
 normalizeUrl :: Text -> Either Text Text
-normalizeUrl raw =
-  case T.breakOn "://" trimmed of
-    (scheme, rest)
-      | T.null rest -> noScheme trimmed
-      | otherwise ->
-          let s = T.toLower scheme
-              after = T.drop 3 rest
-              host = T.takeWhile (/= '/') after
-          in if s /= "http" && s /= "https"
-               then Left ("only http/https are supported: " <> scheme)
-               else if T.null host
-                 then Left "empty host"
-                 else Right (s <> "://" <> lowerHost after)
-  where
-    trimmed = T.strip raw
+normalizeUrl = undefined
 
 noScheme :: Text -> Either Text Text
-noScheme t
-  | T.null (T.takeWhile (/= '/') t) = Left "empty host"
-  | otherwise = Right ("https://" <> lowerHost t)
+noScheme = undefined
+
 lowerHost :: Text -> Text
-lowerHost s =
-  T.toLower (T.takeWhile (/= '/') s) <> T.dropWhile (/= '/') s
+lowerHost = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 3. 순수 난수 전진 (LCG, Linear Congruential Generator)
@@ -171,7 +128,7 @@ lowerHost s =
 -- ---------------------------------------------------------------------------
 
 lcgNext :: Word64 -> Word64
-lcgNext n = 1664525 * n + 1013904223
+lcgNext = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 4. 코드 생성
@@ -187,7 +144,7 @@ lcgNext n = 1664525 * n + 1013904223
 -- ---------------------------------------------------------------------------
 
 genCode :: Word64 -> Text
-genCode = T.take 8 . T.justifyRight 8 '0' . base62Encode . lcgNext
+genCode = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 5. 일별 집계
@@ -203,10 +160,10 @@ genCode = T.take 8 . T.justifyRight 8 '0' . base62Encode . lcgNext
 -- ---------------------------------------------------------------------------
 
 countByDay :: [UTCTime] -> [(Text, Int)]
-countByDay = Map.toAscList . Map.fromListWith (+) . map (\t -> (dayKey t, 1))
+countByDay = undefined
 
 dayKey :: UTCTime -> Text
-dayKey = T.pack . formatTime defaultTimeLocale "%Y-%m-%d" . utctDay
+dayKey = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 6. 사용법 페이지
@@ -220,23 +177,7 @@ dayKey = T.pack . formatTime defaultTimeLocale "%Y-%m-%d" . utctDay
 -- ---------------------------------------------------------------------------
 
 renderUsage :: Int -> Text -> Text
-renderUsage port base =
-  T.intercalate
-    "\n"
-    [ "=== Ex12: URL 단축 + 클릭 통계 서비스 (포트 " <> T.pack (show port) <> ") ==="
-    , ""
-    , "1) URL 줄이기"
-    , "   curl -s -X POST http://" <> base <> "/api/links \\"
-    , "     -H 'content-type: application/json' -d '{\"url\":\"haskell.org\"}'"
-    , ""
-    , "2) 짧은 주소 열기 (302 리다이렉트, 클릭 1회 기록)"
-    , "   curl -si http://" <> base <> "/r/<code>"
-    , ""
-    , "3) 통계 보기"
-    , "   curl -s http://" <> base <> "/api/links/<code>"
-    , ""
-    , "DB 직접 보기:  sqlite3 ex12.db 'select * from links;'"
-    ]
+renderUsage = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 7. 요청 본문 파싱 (aeson)
@@ -252,7 +193,7 @@ data NewLink = NewLink {newLinkUrl :: Text}
   deriving (Generic, Show)
 
 instance FromJSON NewLink where
-  parseJSON = genericParseJSON defaultOptions {fieldLabelModifier = unpackModifier "newLink"}
+  parseJSON = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 8. 링크 응답 직렬화 (aeson)
@@ -276,11 +217,8 @@ data Link = Link
   }
   deriving (Generic, Show)
 
-jsonOptions :: Options
-jsonOptions = defaultOptions {fieldLabelModifier = unpackModifier "link"}
-
 instance ToJSON Link where
-  toJSON = genericToJSON jsonOptions
+  toJSON = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 9. 통계 응답 직렬화 (aeson)
@@ -305,24 +243,8 @@ data LinkStats = LinkStats
   }
   deriving (Generic, Show)
 
-statsJsonOptions :: Options
-statsJsonOptions = defaultOptions {fieldLabelModifier = unpackModifier "stats"}
-
 instance ToJSON LinkStats where
-  toJSON = genericToJSON statsJsonOptions
-
--- | aeson 의 fieldLabelModifier 는 String -> String 이다. Text 로 만든 헬퍼를
---   감싸서 쓴다.
-unpackModifier :: Text -> String -> String
-unpackModifier p = T.unpack . stripFieldPrefix p . T.pack
-
-stripFieldPrefix :: Text -> Text -> Text
-stripFieldPrefix p s = maybe s lowerFirst (T.stripPrefix p s)
-
-lowerFirst :: Text -> Text
-lowerFirst t = case T.uncons t of
-  Nothing -> t
-  Just (c, rest) -> T.cons (toLower c) rest
+  toJSON = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 10. DB 연결과 스키마
@@ -338,16 +260,10 @@ lowerFirst t = case T.uncons t of
 -- ---------------------------------------------------------------------------
 
 openDb :: FilePath -> IO Connection
-openDb path = do
-  conn <- open path
-  execute_ conn "CREATE TABLE IF NOT EXISTS links (code TEXT PRIMARY KEY, url TEXT NOT NULL, created_at INTEGER NOT NULL)"
-  execute_ conn "CREATE TABLE IF NOT EXISTS clicks (id INTEGER PRIMARY KEY AUTOINCREMENT, code TEXT NOT NULL, clicked_at INTEGER NOT NULL)"
-  pure conn
+openDb = undefined
 
 linkCount :: Connection -> IO Int
-linkCount conn = do
-  counts <- (query_ conn "SELECT COUNT(*) FROM links" :: IO [Only Int])
-  pure (sum (map fromOnly counts))
+linkCount = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 11. 링크 읽기/쓰기
@@ -369,24 +285,19 @@ data LinkRow = LinkRow {rowCode :: Text, rowUrl :: Text, rowCreatedAt :: Int}
   deriving (Show)
 
 instance FromRow LinkRow where
-  fromRow = LinkRow <$> field <*> field <*> field
+  fromRow = undefined
 
 instance ToRow LinkRow where
-  toRow (LinkRow code url createdAt) = toRow (code, url, createdAt)
+  toRow = undefined
 
 insertLink :: Connection -> Text -> Text -> Int -> IO ()
-insertLink conn code url now =
-  execute conn "INSERT INTO links (code, url, created_at) VALUES (?,?,?)" (code, url, now)
+insertLink = undefined
 
 findLinkByCode :: Connection -> Text -> IO (Maybe LinkRow)
-findLinkByCode conn code =
-  listToMaybe
-    <$> query conn "SELECT code, url, created_at FROM links WHERE code = ?" (Only code)
+findLinkByCode = undefined
 
 findLinkByUrl :: Connection -> Text -> IO (Maybe LinkRow)
-findLinkByUrl conn url =
-  listToMaybe
-    <$> query conn "SELECT code, url, created_at FROM links WHERE url = ?" (Only url)
+findLinkByUrl = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 12. 클릭 기록/조회
@@ -402,25 +313,16 @@ findLinkByUrl conn url =
 -- ---------------------------------------------------------------------------
 
 toEpoch :: UTCTime -> Int
-toEpoch = round . utcTimeToPOSIXSeconds
+toEpoch = undefined
 
 fromEpoch :: Int -> UTCTime
-fromEpoch = posixSecondsToUTCTime . fromInteger . toInteger
+fromEpoch = undefined
 
 insertClick :: Connection -> Text -> Int -> IO ()
-insertClick conn code now =
-  execute conn "INSERT INTO clicks (code, clicked_at) VALUES (?,?)" (code, now)
+insertClick = undefined
 
 clicksFor :: Connection -> Text -> IO [UTCTime]
-clicksFor conn code = do
-  rows <-
-    ( query
-        conn
-        "SELECT clicked_at FROM clicks WHERE code = ? ORDER BY id DESC"
-        (Only code) ::
-        IO [Only Int]
-    )
-  pure (map (fromEpoch . fromOnly) rows)
+clicksFor = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 13. 데모 데이터
@@ -435,17 +337,7 @@ clicksFor conn code = do
 -- ---------------------------------------------------------------------------
 
 seedSample :: Connection -> IO ()
-seedSample conn = do
-  n <- linkCount conn
-  if n > 0
-    then pure ()
-    else do
-      now <- getCurrentTime
-      insertLink conn "haskell" "https://haskell.org" (toEpoch now)
-      insertLink conn "stack" "https://haskellstack.org" (toEpoch now)
-      insertClick conn "haskell" (toEpoch (addUTCTime (-3600) now))
-      insertClick conn "haskell" (toEpoch (addUTCTime (-7200) now))
-      insertClick conn "stack" (toEpoch (addUTCTime (-86400) now))
+seedSample = undefined
 
 -- ---------------------------------------------------------------------------
 -- 서버: API 타입과 핸들러 (TODO 14~17)
@@ -478,45 +370,13 @@ type ShortenerAPI =
 -- ---------------------------------------------------------------------------
 
 linkHandler :: Connection -> Int -> NewLink -> Handler Link
-linkHandler conn port (NewLink rawUrl) =
-  case normalizeUrl rawUrl of
-    Left err -> throwError (httpError 400 err)
-    Right url -> do
-      existing <- liftIO (findLinkByUrl conn url)
-      case existing of
-        Just row -> pure (toLink port row)
-        Nothing -> do
-          now <- liftIO getCurrentTime
-          let seed = fromInteger (round (utcTimeToPOSIXSeconds now))
-          code <- liftIO (freshCode conn seed)
-          liftIO (insertLink conn code url (toEpoch now))
-          row <- liftIO (findLinkByCode conn code)
-          case row of
-            Just r -> pure (toLink port r)
-            Nothing -> throwError (httpError 500 "failed to store link")
+linkHandler = undefined
 
 freshCode :: Connection -> Word64 -> IO Text
-freshCode conn seed = go (lcgNext seed) 0
-  where
-    go :: Word64 -> Int -> IO Text
-    go s attempts
-      | attempts >= 10 = fail "could not generate a free code"
-      | otherwise =
-          let code = genCode s
-          in do
-                taken <- findLinkByCode conn code
-                case taken of
-                  Just _ -> go (lcgNext s) (attempts + 1)
-                  Nothing -> pure code
+freshCode = undefined
 
 toLink :: Int -> LinkRow -> Link
-toLink port (LinkRow code url createdAt) =
-  Link
-    { linkCode = code
-    , linkUrl = url
-    , linkShortUrl = "http://localhost:" <> T.pack (show port) <> "/r/" <> code
-    , linkCreatedAt = createdAt
-    }
+toLink = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 15. 리다이렉트 핸들러
@@ -533,15 +393,7 @@ toLink port (LinkRow code url createdAt) =
 -- ---------------------------------------------------------------------------
 
 redirectHandler :: Connection -> Text -> Handler NoContent
-redirectHandler conn code = do
-  mrow <- liftIO (findLinkByCode conn code)
-  case mrow of
-    Nothing -> throwError (httpError 404 ("unknown code: " <> code))
-    Just row -> do
-      now <- liftIO getCurrentTime
-      liftIO (insertClick conn code (toEpoch now))
-      throwError
-        err302 {errHeaders = [("Location", encodeUtf8 (rowUrl row))]}
+redirectHandler = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 16. 통계 핸들러
@@ -556,21 +408,7 @@ redirectHandler conn code = do
 -- ---------------------------------------------------------------------------
 
 statsHandler :: Connection -> Text -> Handler LinkStats
-statsHandler conn code = do
-  mrow <- liftIO (findLinkByCode conn code)
-  case mrow of
-    Nothing -> throwError (httpError 404 ("unknown code: " <> code))
-    Just row -> do
-      clicks <- liftIO (clicksFor conn code)
-      pure
-        LinkStats
-          { statsCode = rowCode row
-          , statsUrl = rowUrl row
-          , statsCreatedAt = rowCreatedAt row
-          , statsTotalClicks = length clicks
-          , statsByDay = countByDay clicks
-          , statsRecentClicks = map toEpoch (take 10 clicks)
-          }
+statsHandler = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 17. 조립과 실행
@@ -587,14 +425,10 @@ statsHandler conn code = do
 -- ---------------------------------------------------------------------------
 
 serverT :: Connection -> Int -> ServerT ShortenerAPI Handler
-serverT conn port =
-  linkHandler conn port
-    :<|> statsHandler conn
-    :<|> redirectHandler conn
-    :<|> pure (renderUsage port ("localhost:" <> T.pack (show port)))
+serverT = undefined
 
 app :: Connection -> Int -> Application
-app conn port = serve (Proxy :: Proxy ShortenerAPI) (serverT conn port)
+app = undefined
 
 -- ---------------------------------------------------------------------------
 -- TODO 18 (선택). 효과를 데이터로 — Free 모나드 코어

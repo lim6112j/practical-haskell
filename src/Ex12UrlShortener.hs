@@ -9,8 +9,8 @@
 Module      : Ex12UrlShortener
 Description : 연습 12 — 실전: URL 단축 + 클릭 통계 서비스
 
-  이 파일은 '구현이 비어 있는' 연습 파일이다.
-  아래 TODO가 표시된 함수/인스턴스의 `undefined`를 직접 채워 넣으면 된다.
+  이 파일은 완성된 구현이다. `stack run -- ex12-url-shortener` 로 바로 실행할 수 있다.
+  `undefined` 로 비어 있는 연습용은 Ex12UrlShortenerAnswer.hs 를 보라.
 
   실행:
       stack run -- ex12-url-shortener

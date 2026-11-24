@@ -7,6 +7,9 @@ Functor / Applicative / Monad / Arrow 이후의 어려운 주제를 연습하기
 각 파일에는 **목표와 힌트만** 적혀 있고, 구현은 `undefined` 로 비어 있다.
 직접 채워 넣으면서 공부하는 용도. `main` 의 `print` 옆 주석이 기대값이다.
 
+예외: Ex12 만 `src/Ex12UrlShortener.hs` 가 완성 구현이고,
+`src/Ex12UrlShortenerAnswer.hs` 가 `undefined` 로 비어 있는 연습 파일이다.
+
 | 명령 | 파일 | 주제 |
 | --- | --- | --- |
 | `stack run -- ex01-foldable-traversable` | `src/Ex01FoldableTraversable.hs` | Foldable / Traversable 인스턴스, Monoid, Alternative |
@@ -43,8 +46,9 @@ stack ghci                   # 대화형 실험
 11. Ex11 — Generics + DerivingVia (보일러플레이트 제거)
 12. Ex12 — 실전 프로그램: 지금까지의 개념을 실제 프로그램에 쓴다 (입력 검증, sqlite, aeson, servant/warp)
 
-Ex12 는 서버를 띄워 쓰는 프로그램이다. TODO 1~6(순수 코어)만 먼저 채우고 `stack test` 로
-확인한 뒤, TODO 10~17 을 채워 서버를 올려보자.
+Ex12 는 서버를 띄워 쓰는 프로그램이다. `src/Ex12UrlShortener.hs` 는 완성 구현이고,
+`src/Ex12UrlShortenerAnswer.hs` 의 TODO 1~17 이 `undefined` 로 비어 있다. Answer 파일을
+채워 보면서 `stack test` 로 순수 코어를 확인하고, TODO 10~17 을 채워 서버를 올려보자.
 
 ```bash
 stack run -- ex12-url-shortener            # 기본 8080 포트 / ex12.db

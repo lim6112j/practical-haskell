@@ -17,7 +17,7 @@ Ex01~Ex11은 개념을 하나씩 연습하는 파일이다. 이번에는 **지�
 
 **목표**
 
-- `src/Ex12UrlShortener.hs` (연습용, TODO 곳곳에 `undefined`) + `src/Ex12UrlShortenerAnswer.hs` (정답) 한 쌍.
+- `src/Ex12UrlShortener.hs` (완성 구현) + `src/Ex12UrlShortenerAnswer.hs` (연습용, TODO 곳곳에 `undefined`) 한 쌍.
 - TODO 번호·난이도 티어·힌트·`main` 옆 기대값 주석 — Ex01~Ex11과 같은 문서 톤.
 - `stack run -- ex12-url-shortener` 로 서버가 뜨고, curl로 단축/리다이렉트/통계가 동작한다.
 - 순수 코어는 `test/Spec.hs` 의 hspec으로 검증한다.
@@ -110,10 +110,11 @@ data LinkStats = LinkStats
 
 ## 6. 파일 구성과 컨벤션
 
-- `src/Ex12UrlShortener.hs` — 연습 파일. 섹션 배너 + `TODO N.` + 목표/힌트 + `main`(기대값 주석).
-  모듈 내보내기는 `main` **그리고 순수 코어 함수들**(TODO 1~6) — hspec이 임포트해야 하므로. (기존 Ex 파일이
-  `main`만 내보내는 컨벤션에서 의도적으로 벗어나는 지점이다. 이유: DB/서버는 테스트하지 않고 순수 코어만 테스트한다.)
-- `src/Ex12UrlShortenerAnswer.hs` — 같은 파일에 구현이 채워진 정답. 선택 TODO(18)는 정답에서도 비워 둔다.
+- `src/Ex12UrlShortener.hs` — 완성 구현. 실행 가능한 서버이며 hspec이 이 모듈의 순수 코어를 임포트한다.
+  모듈 내보내기는 `main` **그리고 순수 코어 함수들**(TODO 1~6). (기존 Ex 파일이 `main`만 내보내는
+  컨벤션에서 의도적으로 벗어나는 지점이다. 이유: DB/서버는 테스트하지 않고 순수 코어만 테스트한다.)
+- `src/Ex12UrlShortenerAnswer.hs` — 같은 구조의 연습 파일. 섹션 배너 + `TODO N.` + 목표/힌트 + `main`(기대값 주석),
+  TODO 1~17 은 `undefined`. 선택 TODO(18)는 주석으로만 남는다.
 - `package.yaml` — 실행파일 추가:
 
   ```yaml
@@ -142,8 +143,7 @@ data LinkStats = LinkStats
 연습 파일에서 구현된 채로 주어지는 것: `main`(인자 처리 + 순수 코어 점검 print + 서버 기동),
 `httpError`(에러 응답 생성), `argValue`(인자 파싱). 나머지는 전부 TODO.
 
-필요 언어 확장: `DataKinds`, `TypeOperators`, `OverloadedStrings`, `DeriveGeneric`, `DeriveAnyClass`,
-`ScopedTypeVariables`(Proxy 주석용).
+필요 언어 확장: `DataKinds`, `TypeOperators`, `OverloadedStrings`, `DeriveGeneric`.
 
 ## 7. TODO 설계
 
@@ -235,8 +235,9 @@ print (T.length (genCode 42))             -- 8
 
 DB/서버/HTTP는 테스트하지 않는다(3장 제약, 2장 안티골).
 
-주의: 테스트는 **연습 파일**의 순수 코어를 임포트한다. 따라서 TODO 1~6 을 채우기 전에는
-`stack test` 가 빨간 불이다(스캐폴드는 컴파일만 된다). README 에 그 점을 적어 둔다.
+주의: 테스트는 완성 구현인 `src/Ex12UrlShortener.hs` 를 임포트하므로 항상 통과한다.
+`src/Ex12UrlShortenerAnswer.hs` 를 채워 보려면 임포트를 그 모듈로 바꿔 확인한다(채우기 전에는
+`Prelude.undefined` 로 빨간 불).
 
 ## 11. 빌더 체크 결과와 확정된 결정
 
@@ -251,7 +252,7 @@ DB/서버/HTTP는 테스트하지 않는다(3장 제약, 2장 안티골).
    (객체로 하고 싶으면 `ToJSON` 을 손으로 쓰는 도전).
 3. **`seedSample` 은 언제 도나?** → 링크가 비어 있을 때만(`linkCount`). 매 실행마다 쌓이면 안 된다.
 
-그 외 지적("테스트가 연습 파일을 임포트하므로 스캐폴에서 `stack test` 가 빨간 불")은 의도된 설계로 남겼다.
+그 외 지적("연습 파일을 테스트하면 스캐폴에서 빨간 불")은 의도된 설계로 남겼다.
 
 ## 10. 빌더에게 남은 것
 
